@@ -24,7 +24,7 @@ namespace LMS_Project.Controllers
             var lMS_ProjectContext = _context.Books.Include(b => b.Author).Include(b => b.Publisher);
             return View(await lMS_ProjectContext.ToListAsync());
         }
-        // This is a comment
+        // This is a comment 2
         public async Task<IActionResult> AllBooksList(string searchstring)
         {
             /*var book = from b in _context.Books select b;
