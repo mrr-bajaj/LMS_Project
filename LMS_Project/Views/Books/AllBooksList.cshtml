@@ -1,0 +1,33 @@
+﻿@model IEnumerable<LMS_Project.Models.Book>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<input type="text" placeholder="Search Here" width="20"/>
+<input type="button" value="Search" style="margin-bottom:5%;"/>
+
+
+<div class="container mt-4">
+    <div class="row">
+        @foreach(var item in Model)
+        {   
+            <div class="col-auto mb-3">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" height="250" src="@Html.DisplayFor(modelItem => item.ImageUrl)" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.BookTitle)</h5>
+                    <p class="card-text">No. of copies available: @Html.DisplayFor(modelItem => item.NoOfCopies)</p>
+                    <p class="card-text">Author: @Html.DisplayFor(modelItem => item.Author.AuthorName)</p>
+                    <p class="card-text">Category: @Html.DisplayFor(modelItem => item.Category)</p>
+                    <form asp-controller="LendRequests" asp-action="RequestToLend" asp-route-bookId=@item.BookId>
+                         <input type="submit" value="Request to Borrow"/>
+                    </form>
+                   
+                </div>
+            </div>
+        </div>        
+        }
+    </div>
+</div>

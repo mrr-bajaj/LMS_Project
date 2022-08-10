@@ -1,0 +1,36 @@
+﻿@model IEnumerable<LMS_Project.Models.LendRequest>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Admin's Requested Book list</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.LendId)</th>
+        <th>@Html.DisplayNameFor(model => model.User)</th>
+        <th>@Html.DisplayNameFor(model => model.Book)</th>
+        <th>@Html.DisplayNameFor(model => model.LendStatus)</th>
+    </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.LendId)</td>
+                <td>@Html.DisplayFor(modelItem => item.User.UserName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Book.BookTitle)</td>
+                <td>@Html.DisplayFor(modelItem => item.LendStatus)</td>
+                <td>
+                <a asp-action="Edit" asp-route-id="@item.LendId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.LendId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.LendId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
