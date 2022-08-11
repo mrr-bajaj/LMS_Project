@@ -14,17 +14,19 @@ namespace LMS_Project.Controllers
     {
         private readonly LMS_ProjectContext _context;
         private readonly IAccountsRepo _accountsRepo;
+        private readonly ILendRepository _lendRepository;
 
-        public LendRequestsController(LMS_ProjectContext context, IAccountsRepo accountsRepo)
+        public LendRequestsController(LMS_ProjectContext context, IAccountsRepo accountsRepo, ILendRepository lendRepository)
         {
             _context = context;
             _accountsRepo = accountsRepo;
+            _lendRepository = lendRepository;
         }
 
         // GET: LendRequests
         public async Task<IActionResult> Index()
         {
-            var lMS_ProjectContext = _context.LendRequests.Include(l => l.Book).Include(l => l.User);
+            var lMS_ProjectContext = _context.LendRequests.Where(b => b.LendStatus == "Requested").Include(l => l.Book).Include(l => l.User);
             return View(await lMS_ProjectContext.ToListAsync());
         }
 
@@ -36,13 +38,17 @@ namespace LMS_Project.Controllers
 
         public async Task<IActionResult> IssuedBooks()
         {
-            var lMS_ProjectContext = _context.LendRequests.Include(l => l.Book).Include(l => l.User);
+            var username = HttpContext.Session.GetString("username");
+            var user = _accountsRepo.GetUserByName(username);
+            var lMS_ProjectContext = _context.LendRequests.Where(b => b.LendStatus == "Approved" && b.UserId == user.UserId).Include(l => l.Book).Include(l => l.User);
             return View(await lMS_ProjectContext.ToListAsync());
         }
 
         public async Task<IActionResult> UserBookRecords()
         {
-            var lMS_ProjectContext = _context.LendRequests.Include(l => l.Book).Include(l => l.User);
+            var username = HttpContext.Session.GetString("username");
+            var user = _accountsRepo.GetUserByName(username);
+            var lMS_ProjectContext = _context.LendRequests.Where(b => b.UserId == user.UserId).Include(l => l.Book).Include(l => l.User);
             return View(await lMS_ProjectContext.ToListAsync());
         }
 
@@ -56,6 +62,14 @@ namespace LMS_Project.Controllers
         {
             var username = HttpContext.Session.GetString("username");
             var user = _accountsRepo.GetUserByName(username);
+            var noofcopies = _context.Books.SingleOrDefault(b => b.BookId == bookId).NoOfCopies;
+            if (noofcopies <= 0)
+            {
+                _context.Books.SingleOrDefault(b => b.BookId == bookId).IsAvailable = false;
+                return View("RequestedError");
+            }
+            _context.Books.SingleOrDefault(b => b.BookId == bookId).NoOfCopies--;
+
             LendRequest lendRequest = new LendRequest()
             {
                 LendStatus = "Requested",
@@ -66,9 +80,34 @@ namespace LMS_Project.Controllers
                 User = _context.Accounts.SingleOrDefault(u => u.UserId == user.UserId),
             };
             _context.LendRequests.Add(lendRequest);
-
             _context.SaveChanges();
+            
             return View("Requested");
+        }
+
+        public ActionResult ApproveBook(int lendId)
+        {
+            LendRequest lr =  _lendRepository.GetLendRequest(lendId);
+            lr.LendStatus = "Approved";
+            lr.ReturnDate = lr.LendDate.AddDays(40);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult RejectBook(int lendId)
+        {
+            _context.LendRequests.FirstOrDefault(b => b.LendId == lendId).LendStatus = "Rejected";
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult ReturnBook(int lendId)
+        {
+            _context.LendRequests.FirstOrDefault(b => b.LendId == lendId).LendStatus = "Returned";
+            _context.LendRequests.FirstOrDefault(b => b.LendId == lendId).FineAmount = 10 * (int)(DateTime.Now - _context.LendRequests.FirstOrDefault(b => b.LendId == lendId).LendDate).TotalDays;
+            _context.LendRequests.FirstOrDefault(b => b.LendId == lendId).ReturnDate = DateTime.Now;
+            _context.SaveChanges();
+            return RedirectToAction("AllBooksList","Books");
         }
 
         // GET: LendRequests/Details/5

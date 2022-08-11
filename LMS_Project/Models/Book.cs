@@ -24,12 +24,6 @@ namespace LMS_Project.Models
         public int IssuedBooks { get; set; } =0;
         public bool IsAvailable { get; set; } = true;
 
-        public Book()
-        {
-            if (NoOfCopies - IssuedBooks > 0)
-                IsAvailable = true;
-            else
-                IsAvailable = false;
-        }
+        
     }
 }

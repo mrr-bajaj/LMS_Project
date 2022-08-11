@@ -24,25 +24,16 @@ namespace LMS_Project.Controllers
             var lMS_ProjectContext = _context.Books.Include(b => b.Author).Include(b => b.Publisher);
             return View(await lMS_ProjectContext.ToListAsync());
         }
-        // This is a comment 2
         public async Task<IActionResult> AllBooksList(string searchstring)
         {
-            /*var book = from b in _context.Books select b;
+            var lMS_ProjectContext = _context.Books.Include(b => b.Author).Include(b => b.Publisher);
             if (!string.IsNullOrEmpty(searchstring))
             {
-                book = book.Where(b => b.Author.AuthorName.Contains(searchstring) ||
-                                b.Category.Contains(searchstring) || 
-                                b.BookTitle.Contains(searchstring));
-            }
-            book.Include(b => b.Author).Include(b => b.Publisher);*/
-
-            var lMS_ProjectContext = _context.Books.Include(b => b.Author).Include(b => b.Publisher);
-            /*lMS_ProjectContext = lMS_ProjectContext.Where(b => 
-                                b.Author.AuthorName.Contains(searchstring) ||
+               lMS_ProjectContext = _context.Books.Where(b => b.Author.AuthorName.Contains(searchstring) ||
                                 b.Category.Contains(searchstring) ||
-                                b.BookTitle.Contains(searchstring));*/
-            return View(await lMS_ProjectContext.ToListAsync());/*
-            return View(await book.ToListAsync());*/
+                                b.BookTitle.Contains(searchstring)).Include(b => b.Author).Include(b => b.Publisher);
+            }
+            return View(await lMS_ProjectContext.ToListAsync());
         }
 
 
@@ -88,6 +79,7 @@ namespace LMS_Project.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AuthorId"] = new SelectList(_context.Authors, "AuthorId", "AuthorId", book.AuthorId);
+            ViewData["AuthorName"] = new SelectList(_context.Authors, "AuthorId", "AuthorName",book.AuthorId);
             ViewData["PublisherId"] = new SelectList(_context.Publishers, "PublisherId", "PublisherId", book.PublisherId);
             return View(book);
         }

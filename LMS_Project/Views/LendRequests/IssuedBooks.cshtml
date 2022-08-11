@@ -14,7 +14,7 @@
         <th>Book Name</th>
         <th>@Html.DisplayNameFor(model => model.LendDate)</th>
         <th>Due Date</th>
-        <th>Status</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -25,7 +25,9 @@
                 <td>@Html.DisplayFor(modelItem => item.Book.BookTitle)</td>
                 <td>@Html.DisplayFor(modelItem => item.LendDate)</td>
                 <td>@Html.DisplayFor(modelItem => item.ReturnDate)</td>
-                <td>@Html.DisplayFor(modelItem => item.LendStatus)</td>
+                <td><form asp-action="ReturnBook" asp-controller="LendRequests" asp-route-lendId=@item.LendId>
+                    <input type="submit" value="Return Book"/>
+                </form></td>
             </tr>
         }
     </tbody>

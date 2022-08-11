@@ -27,9 +27,13 @@ namespace LMS_Project
         {
             services.AddControllersWithViews();
             services.AddDbContext<LMS_ProjectContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
-            services.AddScoped<ILoginRepo, LoginRepo>(); 
+            services.AddScoped<ILoginRepo, LoginRepo>();
+            services.AddScoped<IBookRepo, BookRepo>();
+            services.AddMvc().AddSessionStateTempDataProvider();
             services.AddSession();
+            services.AddHttpContextAccessor();
             services.AddScoped<IAccountsRepo, AccountsRepo>();
+            services.AddScoped<ILendRepository, LendRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

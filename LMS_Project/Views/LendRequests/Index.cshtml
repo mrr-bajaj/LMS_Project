@@ -25,10 +25,14 @@
                 <td>@Html.DisplayFor(modelItem => item.Book.BookTitle)</td>
                 <td>@Html.DisplayFor(modelItem => item.LendStatus)</td>
                 <td>
-                <a asp-action="Edit" asp-route-id="@item.LendId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.LendId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.LendId">Delete</a>
-                </td>
+                    <form asp-route-lendId="@item.LendId" asp-action="ApproveBook" asp-controller="LendRequests">
+                <input style="padding:2px" type="submit"   value="Approve"/>
+                </form>    
+
+                                    <form asp-route-lendId="@item.LendId" asp-action="RejectBook" asp-controller="LendRequests">
+                <input style="padding:2px" type="submit"   value="Reject"/>
+                </form>    
+            </td>
             </tr>
         }
     </tbody>
