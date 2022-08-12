@@ -2,6 +2,30 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="container">
-    <p>Online Library Management </p>
+<style>
+    .Homecontainer{
+        display: flex;
+        flex-direction: column;
+    }
+    h2,h4{
+        text-align: center;
+    }
+    .Homecontent{
+    display:flex;
+    }
+    .digitalinventory ,.digitaldata,.bookonline{
+        flex:1;
+        justify-content: center;
+    }
+
+</style>
+
+<div class="Homecontainer">
+    <div><img width="100%" src="~/Images/imgs/home-bg.jpg" /></div>
+    <div><h2>Our Features</h2><h4>Our 3 primary features</h4></div>
+    <div class="Homecontent">
+        <div class="digitalinventory"><img width="50%" src="~/Images/imgs/digital-inventory.png"/></div>
+        <div class="digitaldata"><img width="50%" src="~/Images/imgs/digital-data.png"/></div>
+        <div class="bookonline"><img width="50%" src="~/Images/imgs/book-online.png"/></div>
+    </div>
 </div>

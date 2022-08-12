@@ -68,6 +68,13 @@ namespace LMS_Project.Controllers
                 _context.Books.SingleOrDefault(b => b.BookId == bookId).IsAvailable = false;
                 return View("RequestedError");
             }
+            var alreadyrequested = _context.LendRequests.FirstOrDefault(b=> b.BookId == bookId && b.UserId == user.UserId && b.LendStatus == "Requested");
+
+            if(alreadyrequested != null && alreadyrequested.LendStatus == "Requested")
+            {
+
+                return View("AlreadyRequestError");
+            }
             _context.Books.SingleOrDefault(b => b.BookId == bookId).NoOfCopies--;
 
             LendRequest lendRequest = new LendRequest()
@@ -81,7 +88,16 @@ namespace LMS_Project.Controllers
             };
             _context.LendRequests.Add(lendRequest);
             _context.SaveChanges();
-            
+
+            /*var lr = _context.LendRequests.Where(b => b.UserId == user.UserId);
+            foreach (var item in lr)
+            {
+                if (item.LendStatus == "Requested")
+                {
+
+                }
+            }*/
+
             return View("Requested");
         }
 
@@ -91,7 +107,7 @@ namespace LMS_Project.Controllers
             lr.LendStatus = "Approved";
             lr.ReturnDate = lr.LendDate.AddDays(40);
             _context.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index");   
         }
 
         public ActionResult RejectBook(int lendId)
@@ -106,6 +122,7 @@ namespace LMS_Project.Controllers
             _context.LendRequests.FirstOrDefault(b => b.LendId == lendId).LendStatus = "Returned";
             _context.LendRequests.FirstOrDefault(b => b.LendId == lendId).FineAmount = 10 * (int)(DateTime.Now - _context.LendRequests.FirstOrDefault(b => b.LendId == lendId).LendDate).TotalDays;
             _context.LendRequests.FirstOrDefault(b => b.LendId == lendId).ReturnDate = DateTime.Now;
+            _context.LendRequests.Where(b => b.LendId == lendId).Include(l => l.Book).Include(l => l.User).FirstOrDefault(b => b.LendId == lendId).Book.NoOfCopies++;
             _context.SaveChanges();
             return RedirectToAction("AllBooksList","Books");
         }

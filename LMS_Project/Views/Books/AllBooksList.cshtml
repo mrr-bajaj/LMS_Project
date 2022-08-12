@@ -22,7 +22,7 @@
                     <p class="card-text">Author: @Html.DisplayFor(modelItem => item.Author.AuthorName)</p>
                     <p class="card-text">Category: @Html.DisplayFor(modelItem => item.Category)</p>
                     <form asp-controller="LendRequests" asp-action="RequestToLend" asp-route-bookId=@item.BookId>
-                         <input type="submit" value="Request to Borrow"/>
+                         <input type="submit" id="requestbutton" value="Request to Borrow"/>
                     </form>
                    
                 </div>

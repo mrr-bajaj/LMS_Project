@@ -6,16 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LMS_Project.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace LMS_Project.Controllers
 {
     public class BooksController : Controller
     {
         private readonly LMS_ProjectContext _context;
+        private readonly IAccountsRepo _accountsRepo;
 
-        public BooksController(LMS_ProjectContext context)
+        public BooksController(LMS_ProjectContext context,IAccountsRepo accountsRepo)
         {
             _context = context;
+            _accountsRepo = accountsRepo;
         }
 
         // GET: Books
@@ -26,6 +29,9 @@ namespace LMS_Project.Controllers
         }
         public async Task<IActionResult> AllBooksList(string searchstring)
         {
+            var username = HttpContext.Session.GetString("username");
+            var user = _accountsRepo.GetUserByName(username);
+            
             var lMS_ProjectContext = _context.Books.Include(b => b.Author).Include(b => b.Publisher);
             if (!string.IsNullOrEmpty(searchstring))
             {
@@ -60,11 +66,11 @@ namespace LMS_Project.Controllers
         // GET: Books/Create
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.Authors, "AuthorId", "AuthorId");
-            ViewData["PublisherId"] = new SelectList(_context.Publishers, "PublisherId", "PublisherId");
+            ViewData["AuthorId"] = new SelectList(_context.Authors, "AuthorId", "AuthorName");
+            ViewData["PublisherId"] = new SelectList(_context.Publishers, "PublisherId", "PublisherName");
             return View();
         }
-
+            
         // POST: Books/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -79,7 +85,6 @@ namespace LMS_Project.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AuthorId"] = new SelectList(_context.Authors, "AuthorId", "AuthorId", book.AuthorId);
-            ViewData["AuthorName"] = new SelectList(_context.Authors, "AuthorId", "AuthorName",book.AuthorId);
             ViewData["PublisherId"] = new SelectList(_context.Publishers, "PublisherId", "PublisherId", book.PublisherId);
             return View(book);
         }
