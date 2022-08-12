@@ -5,8 +5,16 @@
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
+<style>
+    .adminhead{
+        text-align: center;
+        margin-bottom: 1%;
+    }
+</style>
+<div class="adminhead">
 <h1>Your Issued Books</h1>
-
+<img width="10%" height="10%" src="~/Images/imgs/books.png"/>
+</div>
 <table class="table">
     <thead>
     <tr>
@@ -26,7 +34,7 @@
                 <td>@Html.DisplayFor(modelItem => item.LendDate)</td>
                 <td>@Html.DisplayFor(modelItem => item.ReturnDate)</td>
                 <td><form asp-action="ReturnBook" asp-controller="LendRequests" asp-route-lendId=@item.LendId>
-                    <input type="submit" value="Return Book"/>
+                    <input class="btn btn-secondary" type="submit" value="Return Book"/>
                 </form></td>
             </tr>
         }

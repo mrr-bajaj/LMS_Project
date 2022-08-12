@@ -5,37 +5,36 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h6>
+    <a asp-action="Create">Add New Book</a>
+</h6>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.BookTitle)
+                Book Title
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NoOfCopies)
+                NoOfCopies
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                Category
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ImageUrl)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IssuedBooks)
+                IssuedBooks
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsAvailable)
+                Available
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Author)
+                Author
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Publisher)
+                Publisher
             </th>
             <th></th>
         </tr>

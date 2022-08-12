@@ -13,13 +13,17 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">E-Library</a>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-start" >
+                    <a style="text-align:start;margin-right:1%;width:50%" class="navbar-brand" asp-action="Index" asp-controller="Home">
+                        <img src="~/Images/imgs/logo.png" width="15%" height="20%"/> E-Library
+                    </a>
+                    <div style="text-align:start;margin-right:1%">Hello @Context.Session.GetString("username")</div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div>Hello, @Context.Session.GetString("username")</div>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                </div>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Index">Book Inventory</a>

@@ -4,16 +4,24 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
+<style>
+    .adminhead{
+        text-align: center;
+        margin-bottom: 1%;
+    }
+</style>
+<div class="adminhead">
 <h1>Admin's Requested Book list</h1>
-
+<img width="10%" height="10%" src="~/Images/imgs/books.png"/>
+</div>
 <table class="table">
     <thead>
     <tr>
-        <th>@Html.DisplayNameFor(model => model.LendId)</th>
-        <th>@Html.DisplayNameFor(model => model.User)</th>
-        <th>@Html.DisplayNameFor(model => model.Book)</th>
-        <th>@Html.DisplayNameFor(model => model.LendStatus)</th>
+        <th>Lend ID</th>
+        <th>User Name</th>
+        <th>Book Name</th>
+        <th>Lend Status</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -25,13 +33,12 @@
                 <td>@Html.DisplayFor(modelItem => item.Book.BookTitle)</td>
                 <td>@Html.DisplayFor(modelItem => item.LendStatus)</td>
                 <td>
-                    <form asp-route-lendId="@item.LendId" asp-action="ApproveBook" asp-controller="LendRequests">
-                <input style="padding:2px" type="submit"   value="Approve"/>
-                </form>    
-
-                                    <form asp-route-lendId="@item.LendId" asp-action="RejectBook" asp-controller="LendRequests">
-                <input style="padding:2px" type="submit"   value="Reject"/>
-                </form>    
+                    <form style="float:left;" asp-route-lendId="@item.LendId" asp-action="ApproveBook" asp-controller="LendRequests">
+                        <input class="btn btn-success"  style="padding:2px" type="submit"  value="Approve"/>
+                    </form>    
+                    <form style="float:left;" asp-route-lendId="@item.LendId" asp-action="RejectBook" asp-controller="LendRequests">
+                        <input class="btn btn-danger" style="padding:2px;margin-left:20%" type="submit"   value="Reject"/>
+                    </form>    
             </td>
             </tr>
         }

@@ -5,13 +5,20 @@
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
-<h1>Your All Records</h1>
-
+<style>
+    .adminhead{
+        text-align: center;
+        margin-bottom: 1%;
+    }
+</style>
+<div class="adminhead">
+<h1>Your All Books</h1>
+<img width="10%" height="10%" src="~/Images/imgs/books.png"/>
+</div>
 <table class="table">
     <thead>
     <tr>
         <th>@Html.DisplayNameFor(model => model.LendId)</th>
-        <th>User Name</th>
         <th>Book Name</th>
         <th>Fine Amount</th>
         <th>Status</th>
@@ -22,7 +29,6 @@
         {
             <tr>
                 <td>@Html.DisplayFor(modelItem => item.LendId)</td>
-                <td>@Html.DisplayFor(modelItem => item.User.UserName)</td>
                 <td>@Html.DisplayFor(modelItem => item.Book.BookTitle)</td>
                 <td>@Html.DisplayFor(modelItem => item.FineAmount)</td>
                 <td>@Html.DisplayFor(modelItem => item.LendStatus)</td>

@@ -68,11 +68,10 @@ namespace LMS_Project.Controllers
                 _context.Books.SingleOrDefault(b => b.BookId == bookId).IsAvailable = false;
                 return View("RequestedError");
             }
-            var alreadyrequested = _context.LendRequests.FirstOrDefault(b=> b.BookId == bookId && b.UserId == user.UserId && b.LendStatus == "Requested");
+            var alreadyrequested = _context.LendRequests.FirstOrDefault(b => b.BookId == bookId && b.UserId == user.UserId && b.LendStatus == "Requested");
 
-            if(alreadyrequested != null && alreadyrequested.LendStatus == "Requested")
+            if (alreadyrequested != null && alreadyrequested.LendStatus == "Requested")
             {
-
                 return View("AlreadyRequestError");
             }
             _context.Books.SingleOrDefault(b => b.BookId == bookId).NoOfCopies--;
@@ -103,16 +102,19 @@ namespace LMS_Project.Controllers
 
         public ActionResult ApproveBook(int lendId)
         {
-            LendRequest lr =  _lendRepository.GetLendRequest(lendId);
+            LendRequest lr = _lendRepository.GetLendRequest(lendId);
             lr.LendStatus = "Approved";
             lr.ReturnDate = lr.LendDate.AddDays(40);
             _context.SaveChanges();
-            return RedirectToAction("Index");   
+            return RedirectToAction("Index");
         }
 
         public ActionResult RejectBook(int lendId)
-        {
-            _context.LendRequests.FirstOrDefault(b => b.LendId == lendId).LendStatus = "Rejected";
+        {/*
+            _context.LendRequests.FirstOrDefault(b => b.LendId == lendId).LendStatus = "Rejected";*/
+            LendRequest lr = _lendRepository.GetLendRequest(lendId);
+            lr.LendStatus = "Rejected";
+            lr.ReturnDate = lr.LendDate;
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -124,7 +126,7 @@ namespace LMS_Project.Controllers
             _context.LendRequests.FirstOrDefault(b => b.LendId == lendId).ReturnDate = DateTime.Now;
             _context.LendRequests.Where(b => b.LendId == lendId).Include(l => l.Book).Include(l => l.User).FirstOrDefault(b => b.LendId == lendId).Book.NoOfCopies++;
             _context.SaveChanges();
-            return RedirectToAction("AllBooksList","Books");
+            return RedirectToAction("AllBooksList", "Books");
         }
 
         // GET: LendRequests/Details/5
