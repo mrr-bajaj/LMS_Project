@@ -1,7 +1,13 @@
 ﻿@{
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
-
-<center>
-    View Your Requested Books or Browse for more <a asp-controller="Books" asp-action="AllBooksList"> books </a>
+<style>
+center{
+    font-size: 30px;
+    margin-top: 10%;
+}
+</style>
+<center >
+    Your Book is requested successfully!! 
+    <p>Browse for more <a asp-controller="Books" asp-action="AllBooksList"> books </a></p>
 </center>

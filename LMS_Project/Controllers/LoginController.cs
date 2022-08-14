@@ -23,8 +23,8 @@ namespace LMS_Project.Controllers
 
         // GET: Accounts
         public IActionResult Index(string username, string password)
-        {/*
-            HttpContext.Session.Clear();*/
+        {
+            HttpContext.Session.Remove("username");
             if (username != null && password != null)
             {
                 var user = _user.getUserByName(username);

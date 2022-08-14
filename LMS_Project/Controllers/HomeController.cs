@@ -20,6 +20,7 @@ namespace LMS_Project.Controllers
 
         public IActionResult Index()
         {
+            HttpContext.Session.Remove("username");
             return View();
         }
 

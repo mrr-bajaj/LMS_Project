@@ -26,13 +26,13 @@ namespace LMS_Project.Controllers
         // GET: LendRequests
         public async Task<IActionResult> Index()
         {
-            var lMS_ProjectContext = _context.LendRequests.Where(b => b.LendStatus == "Requested").Include(l => l.Book).Include(l => l.User);
+            var lMS_ProjectContext = _context.LendRequests.Where(b => b.LendStatus == "Requested").Include(l => l.Book).Include(l => l.User).OrderByDescending(b => b.LendId);
             return View(await lMS_ProjectContext.ToListAsync());
         }
 
         public async Task<IActionResult> LentList()
         {
-            var lMS_ProjectContext = _context.LendRequests.Include(l => l.Book).Include(l => l.User);
+            var lMS_ProjectContext = _context.LendRequests.Include(l => l.Book).Include(l => l.User).OrderByDescending(b => b.LendId);
             return View(await lMS_ProjectContext.ToListAsync());
         }
 
@@ -40,7 +40,7 @@ namespace LMS_Project.Controllers
         {
             var username = HttpContext.Session.GetString("username");
             var user = _accountsRepo.GetUserByName(username);
-            var lMS_ProjectContext = _context.LendRequests.Where(b => b.LendStatus == "Approved" && b.UserId == user.UserId).Include(l => l.Book).Include(l => l.User);
+            var lMS_ProjectContext = _context.LendRequests.Where(b => b.LendStatus == "Approved" && b.UserId == user.UserId).Include(l => l.Book).Include(l => l.User).OrderByDescending(b => b.LendId);
             return View(await lMS_ProjectContext.ToListAsync());
         }
 
@@ -48,13 +48,13 @@ namespace LMS_Project.Controllers
         {
             var username = HttpContext.Session.GetString("username");
             var user = _accountsRepo.GetUserByName(username);
-            var lMS_ProjectContext = _context.LendRequests.Where(b => b.UserId == user.UserId).Include(l => l.Book).Include(l => l.User);
+            var lMS_ProjectContext = _context.LendRequests.Where(b => b.UserId == user.UserId).Include(l => l.Book).Include(l => l.User).OrderByDescending(b => b.LendId);
             return View(await lMS_ProjectContext.ToListAsync());
         }
 
         public async Task<IActionResult> AllPastBooks()
         {
-            var lMS_ProjectContext = _context.LendRequests.Include(l => l.Book).Include(l => l.User);
+            var lMS_ProjectContext = _context.LendRequests.Include(l => l.Book).Include(l => l.User).OrderByDescending(b => b.LendId);
             return View(await lMS_ProjectContext.ToListAsync());
         }
 
@@ -80,6 +80,7 @@ namespace LMS_Project.Controllers
             {
                 LendStatus = "Requested",
                 LendDate = System.DateTime.Now,
+                ReturnDate = System.DateTime.Now,
                 BookId = bookId,
                 UserId = user.UserId,
                 Book = _context.Books.SingleOrDefault(b => b.BookId == bookId),
@@ -88,14 +89,6 @@ namespace LMS_Project.Controllers
             _context.LendRequests.Add(lendRequest);
             _context.SaveChanges();
 
-            /*var lr = _context.LendRequests.Where(b => b.UserId == user.UserId);
-            foreach (var item in lr)
-            {
-                if (item.LendStatus == "Requested")
-                {
-
-                }
-            }*/
 
             return View("Requested");
         }
@@ -126,7 +119,7 @@ namespace LMS_Project.Controllers
             _context.LendRequests.FirstOrDefault(b => b.LendId == lendId).ReturnDate = DateTime.Now;
             _context.LendRequests.Where(b => b.LendId == lendId).Include(l => l.Book).Include(l => l.User).FirstOrDefault(b => b.LendId == lendId).Book.NoOfCopies++;
             _context.SaveChanges();
-            return RedirectToAction("AllBooksList", "Books");
+            return RedirectToAction("IssuedBooks");
         }
 
         // GET: LendRequests/Details/5

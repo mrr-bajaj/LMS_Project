@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - LMS_Project</title>
+    <title>Admin Portal</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -14,10 +14,10 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-start" >
-                    <a style="text-align:start;margin-right:1%;width:50%" class="navbar-brand" asp-action="Index" asp-controller="Home">
-                        <img src="~/Images/imgs/logo.png" width="15%" height="20%"/> E-Library
+                    <a style="text-align:start;width:40%" class="navbar-brand" asp-action="Index" asp-controller="Home">
+                        <img src="~/Images/imgs/logo.png" width="20%" height="30%"/> E-Library
                     </a>
-                    <div style="text-align:start;margin-right:1%">Hello @Context.Session.GetString("username")</div>
+                    <div style="text-align:start">Hello @Context.Session.GetString("username")</div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -29,13 +29,13 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Books" asp-action="Index">Book Inventory</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Authors" asp-action="Index">Authors</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Authors" asp-action="Index">Authors List</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Publishers" asp-action="Index">Publishers</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Publishers" asp-action="Index">Publishers List</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Accounts" asp-action="Index">Users</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Accounts" asp-action="Index">Users List</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="LendRequests" asp-action="Index">Request List</a>
